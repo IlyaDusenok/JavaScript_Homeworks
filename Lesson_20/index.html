@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        #out {
+            margin: 0 auto;
+            width: 500px;
+            border: 1px solid blueviolet;
+            text-align: center;
+            padding-bottom: 20px
+        }
+    </style>
+</head>
+
+<body>
+<div id="out">
+    <h1 id="content">0:00:000</h1>
+    <button id="start"> Старт</button>
+    <button id="division"> Новый круг</button>
+    <button id="reset"> Сброс</button>
+</div>
+</body>
+<script>
+    var content = document.getElementById("content");
+    var totalTime = 0;
+    var timer;
+
+    function showTime() {
+        var min;
+        var second;
+        var msecond;
+        second = Math.floor((totalTime / 1000) % 60);
+        min = Math.floor(totalTime / 1000 / 60 % 60);
+        msecond = totalTime % 1000;
+
+        second = second % 60 < 10 ? "0" + second : second;
+        min = min % 60 < 10 ? +"0" + min : min;
+        msecond = msecond < 100 ? "0" + msecond : msecond;
+        return min + ":" + second + ":" + msecond;
+    }
+
+    var start = document.getElementById("start");
+    start.onclick = function (e) {
+
+        if (e.target.innerHTML === "Старт") {
+            e.target.innerHTML = "Пауза";
+            timer = setInterval(function () {
+                totalTime += 41;
+                content.innerHTML = showTime();
+            }, 41)
+
+        } else if (e.target.innerHTML === "Пауза") {
+            e.target.innerHTML = "Старт";
+            console.log("Распечатка" + timer);
+            clearInterval(timer);
+            timer = null;
+        }
+    }
+    var division = document.getElementById("division");
+    division.onclick = function (e) {
+        var h2 = document.createElement("h2");
+        h2.innerHTML = showTime();
+        out.appendChild(h2);
+    }
+    var reset = document.getElementById("reset");
+    reset.onclick = function (e) {
+        var divTime = document.getElementsByTagName("h2");
+        for (var i = 0; i < divTime.length; i++) {
+            out.removeChild(divTime[0]);
+            i--;
+        }
+        clearInterval(timer);
+        timer = null;
+        totalTime = 0;
+        content.innerHTML = showTime();
+        start.innerHTML = "Старт";
+    }
+
+</script>
+
+</html>
+
